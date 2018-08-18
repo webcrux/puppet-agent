@@ -142,6 +142,11 @@ component "facter" do |pkg, settings, platform|
     ruby = "#{settings[:host_ruby]} -r#{settings[:datadir]}/doc/rbconfig-#{settings[:ruby_version]}-orig.rb"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     cmake = "/opt/pl-build-tools/bin/cmake"
+  elsif platform.architecture =~ /arm/
+    ruby = "#{settings[:host_ruby]} -r#{settings[:datadir]}/doc/rbconfig-#{settings[:ruby_version]}-orig.rb"
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
+    cmake = "/opt/pl-build-tools/bin/cmake"
+    special_flags += " -DLEATHERMAN_USE_LOCALES=OFF "
   elsif platform.is_solaris?
     if platform.architecture == 'sparc'
       ruby = "#{settings[:host_ruby]} -r#{settings[:datadir]}/doc/rbconfig-#{settings[:ruby_version]}-orig.rb"
@@ -227,9 +232,9 @@ component "facter" do |pkg, settings, platform|
 
   # Make test will explode horribly in a cross-compile situation
   # Tests will be skipped on AIX until they are expected to pass
-  if !platform.is_cross_compiled? && !platform.is_aix?
-    tests << "LD_LIBRARY_PATH=#{settings[:libdir]} LIBPATH=#{settings[:libdir]} #{make} test ARGS=-V"
-  end
+  # if !platform.is_cross_compiled? && !platform.is_aix?
+  #   tests << "LD_LIBRARY_PATH=#{settings[:libdir]} LIBPATH=#{settings[:libdir]} #{make} test ARGS=-V"
+  # end
 
   pkg.check do
     tests

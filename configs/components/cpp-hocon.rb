@@ -14,6 +14,10 @@ component "cpp-hocon" do |pkg, settings, platform|
   elsif platform.is_cross_compiled_linux?
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     cmake = "/opt/pl-build-tools/bin/cmake"
+  elsif platform.architecture =~ /arm/
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
+    cmake = "/opt/pl-build-tools/bin/cmake"
+    special_flags = "-DLEATHERMAN_USE_LOCALES=OFF"
   elsif platform.is_solaris?
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     cmake = "/opt/pl-build-tools/i386-pc-solaris2.#{platform.os_version}/bin/cmake"

@@ -32,6 +32,10 @@ component "cpp-pcp-client" do |pkg, settings, platform|
   elsif platform.is_cross_compiled_linux?
     cmake = "/opt/pl-build-tools/bin/cmake"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
+  elsif platform.architecture =~ /arm/
+    cmake = "/opt/pl-build-tools/bin/cmake"
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
+    platform_flags = "-DLEATHERMAN_USE_LOCALES=OFF"
   elsif platform.is_solaris?
     cmake = "/opt/pl-build-tools/i386-pc-solaris2.#{platform.os_version}/bin/cmake"
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
